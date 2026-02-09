@@ -10,6 +10,7 @@ import pandas as pd
 from typing import Tuple, Optional
 import streamlit as st
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 from pyDEMATEL.DEMATELSolver import DEMATELSolver
 
 
@@ -276,9 +277,15 @@ def dematel_form():
                         plt.close(fig5)
                     
                     with matrix_cols[1]:
-                        st.write("**Total Relation Matrix (T*)**")
+                        st.write("**Total Relation Matrix (T)**")
                         fig6, ax6 = plt.subplots(figsize=(10, 8))
-                        im = ax6.imshow(T_star_rounded, cmap='plasma', aspect='auto', interpolation='nearest')
+                        
+                        # Define custom colormap using reference from https://www.color-hex.com/color-palette/27541
+                        custom_cmap = LinearSegmentedColormap.from_list(
+                            "total_relation_cmap", ["#1d4877", "#ee3e32"]
+                        )
+                        
+                        im = ax6.imshow(T_star_rounded, cmap=custom_cmap, aspect='auto', interpolation='nearest')
                         ax6.set_xticks(range(len(df.columns)))
                         ax6.set_yticks(range(len(df.index)))
                         ax6.set_xticklabels(df.columns, rotation=45, ha='right')
